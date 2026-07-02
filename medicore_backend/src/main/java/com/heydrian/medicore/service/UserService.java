@@ -32,7 +32,10 @@ public class UserService {
     public String verify(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(username);
+            Users user = repo.findUserByUsername(username);
+            if (user != null) {
+                return jwtService.generateToken(user);
+            }
         }
 
         return null;

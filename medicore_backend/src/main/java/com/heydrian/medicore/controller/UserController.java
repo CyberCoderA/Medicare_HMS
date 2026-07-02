@@ -99,7 +99,7 @@ public class UserController {
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
-
+        System.out.println(token);
         return new ResponseEntity<>(Map.of("message", "Login Successful!", "userType", userType), HttpStatus.OK);
     }
     

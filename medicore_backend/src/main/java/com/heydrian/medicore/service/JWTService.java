@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.heydrian.medicore.model.JwtUserPayload;
+import com.heydrian.medicore.model.Users;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -23,14 +26,14 @@ public class JWTService {
     @Value("${jwt.secret:medicore-super-secret-key-that-is-at-least-32-bytes-long}")
     private String secretKey;
 
-    public String generateToken(String username) {
+    public String generateToken(Users user) {
         Map<String, Object> claims = new HashMap<>();
-
+        claims.put("user", new JwtUserPayload(user));
         return Jwts
             .builder()
             .claims()
             .add(claims)
-            .subject(username)
+            .subject(user.getUsername())
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
             .and()
@@ -47,7 +50,27 @@ public class JWTService {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        Claims claims = extractAllClaims(token);
+        Object userClaim = claims.get("user");
+        if (userClaim instanceof JwtUserPayload payload) {
+            return payload.getUsername();
+        }
+
+        Object usernameClaim = claims.get("username");
+        if (usernameClaim instanceof String username && !username.isBlank()) {
+            return username;
+        }
+
+        return claims.getSubject();
+    }
+
+    public Users extractUser(String token) {
+        Claims claims = extractAllClaims(token);
+        Object userClaim = claims.get("user");
+        if (userClaim instanceof JwtUserPayload payload) {
+            return payload.toUser();
+        }
+        return null;
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

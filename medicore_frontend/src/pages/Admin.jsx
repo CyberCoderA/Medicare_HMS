@@ -8,7 +8,6 @@ import AdminUserPanel from "./AdminUserPanel";
 export default function Admin() {
     const [activePane, setActivePane] = useState("users");
     const [usersData, setUsersData] = useState([]);
-    const [username, setUsername] = useState("");
 
     useEffect(() => {
         async function fetchUserData() {
