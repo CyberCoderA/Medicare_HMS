@@ -47,6 +47,19 @@ public class UserController {
         return "API is running! Current Session ID: " + request.getSession().getId();
     }
 
+    // User logout
+    @PostMapping(value = "/logout", produces = "application/json")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        return new ResponseEntity<>(Map.of("message", "Logout Successful!"), HttpStatus.OK);
+    }
+
     // User login
     @PostMapping(value = "/login", produces = "application/json")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {

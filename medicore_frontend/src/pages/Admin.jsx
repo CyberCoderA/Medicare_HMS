@@ -32,6 +32,18 @@ export default function Admin() {
         }
     }
 
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post("http://localhost:8080/api/users/logout", {}, { withCredentials: true });
+
+            if (response.status === 200) {
+                globalThis.location.href = "/login";
+            }
+        } catch (error) {
+            console.error("Error logging out: ", error);
+        }
+    };
+
     return (
         <div className="h-screen w-full flex">
             <div className="bg-primary w-1/4 p-5 flex flex-col justify-between">
@@ -54,7 +66,7 @@ export default function Admin() {
                     </li>
                 </ul>
 
-                <button className="flex justify-end items-center gap-3 w-full hover:cursor-pointer">
+                <button onClick={handleLogout} className="flex justify-end items-center gap-3 w-full hover:cursor-pointer">
                     <ArrowRightStartOnRectangleIcon className="size-12 text-white" />
                     <h1 className="text-white text-2xl font-bold">Logout</h1>
                 </button>
