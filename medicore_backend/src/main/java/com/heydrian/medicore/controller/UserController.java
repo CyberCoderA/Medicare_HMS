@@ -46,36 +46,6 @@ public class UserController {
     public String getStatus(HttpServletRequest request) {
         return "API is running! Current Session ID: " + request.getSession().getId();
     }
-    
-    // getUserBytoken
-    @GetMapping("/currentUser")
-    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
-        String token = null;
-        if (request.getCookies() != null) {
-            for (var cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (token == null) {
-            return new ResponseEntity<>(Map.of("message", "No JWT token found"), HttpStatus.UNAUTHORIZED);
-        }
-
-        String username = jwtService.extractUsername(token);
-        if (username == null) {
-            return new ResponseEntity<>(Map.of("message", "Invalid JWT token"), HttpStatus.UNAUTHORIZED);
-        }
-
-        Users currentUser = repository.findUserByUsername(username);
-        if (currentUser == null) {
-            return new ResponseEntity<>(Map.of("message", "User not found"), HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(Map.of("username", currentUser.getUsername()), HttpStatus.OK);
-    }
 
     // User login
     @PostMapping(value = "/login", produces = "application/json")

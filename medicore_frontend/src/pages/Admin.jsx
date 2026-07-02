@@ -54,10 +54,10 @@ export default function Admin() {
                     </li>
                 </ul>
 
-                <div className="flex justify-end items-center gap-3 w-full">
+                <button className="flex justify-end items-center gap-3 w-full hover:cursor-pointer">
                     <ArrowRightStartOnRectangleIcon className="size-12 text-white" />
                     <h1 className="text-white text-2xl font-bold">Logout</h1>
-                </div>
+                </button>
             </div>
 
             <div className="h-screen w-full">
