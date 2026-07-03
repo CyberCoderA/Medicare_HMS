@@ -18,13 +18,7 @@ export default function AdminUserPanel() {
   const [deleteUserId, setDeleteUserId] = useState("");
   const [isPassVisible, setPassVisible] = useState(false);
   const [usersData, setUsersData] = useState([]);
-  const [userAddInfo, setUserAddInfo] = useState({
-    username: "",
-    userLname: "",
-    userFname: "",
-    password: "",
-    userType: "",
-  });
+  const [userAddInfo, setUserAddInfo] = useState({});
 
   useEffect(() => {
     const fetchUsersData = async () => {
@@ -205,7 +199,7 @@ export default function AdminUserPanel() {
             <button type="submit" className="w-32 h-12 bg-primary text-white font-semibold rounded-xl hover:cursor-pointer hover:bg-accent">Update</button>
 
             {/* Change hardcoded data with appropriate admin id when session is added */}
-            <Link to={`/changePassword?adminID=uid_001&userID=${editUserData.userId}`} target="_blank">
+            <Link to={`/changePassword?adminID=uid_001&userID=${editUserData.userId}&username=${editUserData.username}`}>
               <button type="button" className="w-42 h-12 bg-white border-primary border-2 text-primary font-semibold rounded-xl hover:cursor-pointer hover:bg-primary hover:text-white">Change Password</button>
             </Link>
           </div>
@@ -241,9 +235,14 @@ export default function AdminUserPanel() {
       </Modal>
 
       <table className="w-full h-5/4 table-fixed border-2 overflow-x-scroll">
+        
+
+
+        
+
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border px-2 py-1">ID</th>
+            <tr className="bg-gray-200">
+            <th className="border px-2 py-1 break-words whitespace-normal">ID</th>
             <th className="border px-2 py-1">Username</th>
             <th className="border px-2 py-1">First Name</th>
             <th className="border px-2 py-1">Last Name</th>
@@ -255,12 +254,12 @@ export default function AdminUserPanel() {
         <tbody>
           {usersData?.map((u) => (
             <tr className="h-20 align-top" key={u.userId}>
-              <td className="border px-2 py-1">{u.userId}</td>
-              <td className="border px-2 py-1">{u.username}</td>
-              <td className="border px-2 py-1">{u.userFname}</td>
-              <td className="border px-2 py-1">{u.userLname}</td>
-              <td className="border px-2 py-1">{u.userType}</td>
-              <td className="border px-2 py-1">{u.userCreated}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.userId}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.username}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.userFname}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.userLname}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.userType}</td>
+              <td className="border px-2 py-1 break-words whitespace-normal">{u.userCreated}</td>
               <td className="px-2 py-1 flex justify-center gap-3">
                 <button className="w-17 h-10 bg-primary text-white text-sm font-semibold rounded-xl hover:cursor-pointer hover:bg-accent"
                 onClick={() => handleEditUser(u)}>Edit</button>

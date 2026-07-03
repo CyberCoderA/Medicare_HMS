@@ -36,7 +36,7 @@ export default function Dashboard({ userInfo }) {
                     <li
                         key={item.id}
                         onClick={() => setActivePane(item.id)}
-                        className={`flex justify-center items-center gap-3 p-5 w-full hover:cursor-pointer transition ${
+                        className={`flex justify-center items-center gap-3 p-5 w-full hover:cursor-pointer transition rounded-2xl ${
                             activePane === item.id ? "bg-accent" : "hover:bg-accent"
                         }`}
                     >

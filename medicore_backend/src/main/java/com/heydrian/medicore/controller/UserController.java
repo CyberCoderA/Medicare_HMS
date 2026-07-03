@@ -142,6 +142,24 @@ public class UserController {
         }
     }
 
+    // Handle Change User Password
+    @RequestMapping(value="/changeUserPassword", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<ResponseModel> changeUserPassword(@RequestParam String userID,
+        @RequestParam String adminID, @RequestParam String adminPassword, @RequestParam String newPassword) {
+        try {
+            Users adminUser = repository.findById(adminID).orElse(null);
+
+            if(adminUser == null || !service.verify(adminUser.getUsername(), adminPassword).equals(jwtService.generateToken(adminUser))) {
+                return new ResponseEntity<>(new ResponseModel("Admin authentication failed!", LocalDateTime.now(), null), HttpStatus.UNAUTHORIZED);
+            }
+
+            service.changeUserPassword(userID, newPassword);
+            return new ResponseEntity<>(new ResponseModel("Password changed successfully!", LocalDateTime.now(), null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("Change password failed!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
+        }
+    }
+
     @GetMapping("/findUserByID")
     public Optional<Users> getMethodName(@RequestParam String userID) {
         return repository.findById(userID);

@@ -29,6 +29,16 @@ public class UserService {
         return repo.save(user);
     }
 
+    public Users changeUserPassword(String userID, String newPassword) {
+        Users user = repo.findById(userID).orElse(null);
+        
+        if (user != null) {
+            user.setPassword(encoder.encode(newPassword));
+            return repo.save(user);
+        }
+        return null;
+    }
+
     public String verify(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         if (authentication.isAuthenticated()) {
