@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import Admin from './pages/Admin';
 import ChangePassword from './pages/ChangePassword';
 import ProtectedRoute from './ProtectedRoute';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
@@ -10,8 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/login' element={<Login/>} />
-        <Route path='/admin' element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-        <Route path='/changePassword' element={<ProtectedRoute><ChangePassword/></ProtectedRoute>} />
+        <Route path='/dashboard' element={<ProtectedRoute page={<Dashboard />} />} />
+        <Route path='/changePassword' element={<ProtectedRoute page={<ChangePassword />} />} />
       </Routes>
     </BrowserRouter>
   )

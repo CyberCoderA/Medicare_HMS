@@ -40,7 +40,7 @@ export default function Login() {
       });
 
       if (response.status === 200) {
-        navigate('/admin');
+        navigate('/dashboard');
       }
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || 'Login failed');

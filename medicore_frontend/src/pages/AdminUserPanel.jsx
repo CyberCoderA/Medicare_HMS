@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import Modal from "../components/Modal";
 import CustomTextFieldDark from "../components/CustomTextFieldDark";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { UserIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import Toast from "../components/Toast";
 
-export default function AdminUserPanel({ setUsersData, usersData }) {
+export default function AdminUserPanel() {
   const userTypes = ["TECHNICAL_ADMIN", "HOSPITAL_ADMIN", "DOCTOR", "RECEPTIONIST"];
   const [isUserModal, setUserModal] = useState(false);
   const [editUserModal, setEditUserModal] = useState(false);
@@ -17,6 +17,7 @@ export default function AdminUserPanel({ setUsersData, usersData }) {
   const [showToast, setShowToast] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState("");
   const [isPassVisible, setPassVisible] = useState(false);
+  const [usersData, setUsersData] = useState([]);
   const [userAddInfo, setUserAddInfo] = useState({
     username: "",
     userLname: "",
@@ -24,6 +25,22 @@ export default function AdminUserPanel({ setUsersData, usersData }) {
     password: "",
     userType: "",
   });
+
+  useEffect(() => {
+    const fetchUsersData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/users/allUsers", {
+          withCredentials: true,
+        });
+        setUsersData(response.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUsersData();
+  }, []);
 
   const handleChange = (e) => {
     const value = e.target.value;

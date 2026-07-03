@@ -10,6 +10,7 @@ import com.heydrian.medicore.repository.UserRepository;
 import com.heydrian.medicore.service.JWTService;
 import com.heydrian.medicore.service.UserService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,10 +36,10 @@ public class UserController {
     private final JWTService jwtService;
     private final UserRepository repository;
 
-    public UserController(UserRepository repository, UserService service) {
+    public UserController(UserRepository repository, UserService service, JWTService jwtService) {
         this.repository = repository;
         this.service = service;
-        this.jwtService = new JWTService();
+        this.jwtService = jwtService;
     }
 
     // Controller Status
@@ -144,6 +145,26 @@ public class UserController {
     @GetMapping("/findUserByID")
     public Optional<Users> getMethodName(@RequestParam String userID) {
         return repository.findById(userID);
+    }
+
+    // Find User by Username
+    @GetMapping("/findUserByUsername")
+    public Users findUserByUsername(HttpServletRequest request) {
+        // Retrieving cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    // After checking if jwt cookie exists, retrieve token and 
+                    // extract username from it, then find user by username
+                    String token = cookie.getValue();
+                    String username = jwtService.extractUsername(token);
+                    return repository.findUserByUsername(username);
+                }
+            }
+        }
+        
+        return null;
     }
 
     @GetMapping("/allUsers")

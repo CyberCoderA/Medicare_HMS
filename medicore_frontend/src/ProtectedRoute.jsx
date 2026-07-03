@@ -1,25 +1,32 @@
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, cloneElement } from "react";
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ page }) {
   const [authChecked, setAuthChecked] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/users/allUsers", {
-      withCredentials: true,
-    })
-      .then(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/users/findUserByUsername", {
+          withCredentials: true,
+        });
+
+        setUserInfo(response?.data || null);
         setIsAuthenticated(true);
-        setAuthChecked(true);
-      })
-      .catch(() => {
+      } catch {
+        setUserInfo(null);
         setIsAuthenticated(false);
+      } finally {
         setAuthChecked(true);
-      });
+      }
+    }
+
+    checkAuth();
   }, []);
 
-  if (!authChecked) return <div>Loading...</div>;
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  if (!authChecked) return <div className="h-screen w-full flex items-center justify-center text-4xl italic">Loading...</div>;
+  return isAuthenticated ? cloneElement(page, { userInfo }) : <Navigate to="/login" replace />;
 }
