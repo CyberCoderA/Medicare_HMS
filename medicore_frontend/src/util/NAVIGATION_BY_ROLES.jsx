@@ -1,8 +1,11 @@
-import { HomeIcon, UserIcon, UserGroupIcon, CalendarIcon } from "@heroicons/react/24/solid";
+import { HomeIcon, UserIcon, UserGroupIcon, CalendarIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
+
 import AdminHomePanel from "../pages/AdminHomePanel";
 import AdminUsersPanel from "../pages/AdminUserPanel";
 import AdminLogsPanel from "../pages/AdminLogsPanel";
+
+import ReceptionistRoomsPanel from "../pages/ReceptionistRoomsPanel";
 
 export const NAVIGATION_BY_ROLE = {
   TECHNICAL_ADMIN: [
@@ -22,5 +25,6 @@ export const NAVIGATION_BY_ROLE = {
   RECEPTIONIST: [
     { id: "home", title: "Home", icon: <HomeIcon className="size-8 text-white" />},
     { id: "appointments", title: "Appointments", icon: <CalendarIcon className="size-8 text-white" />},
+    {id: "rooms", title: "Rooms", icon: <PlusIcon className="size-8 text-white" />, pane: <ReceptionistRoomsPanel />},
   ],
 };

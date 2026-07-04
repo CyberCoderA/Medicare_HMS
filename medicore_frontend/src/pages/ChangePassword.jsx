@@ -1,8 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import CustomPasswordFieldDark from "../components/CustomPasswordFieldDark";
-import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
     const [isAdminPasswordVisible, setAdminPasswordVisible] = useState(false);

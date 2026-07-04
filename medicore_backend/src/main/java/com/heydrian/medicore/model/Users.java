@@ -5,6 +5,7 @@ import java.time.Instant;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name="users")
 @Getter
 @Setter
 @AllArgsConstructor
