@@ -7,24 +7,30 @@ import AdminLogsPanel from "../pages/AdminLogsPanel";
 
 import ReceptionistRoomsPanel from "../pages/ReceptionistRoomsPanel";
 
+import HospitalAdminRoomManagement from "../pages/HospitalAdminRoomManagement";
+
 export const NAVIGATION_BY_ROLE = {
   TECHNICAL_ADMIN: [
     { id: "home", title: "Home", icon: <HomeIcon className="size-8 text-white" />, pane: <AdminHomePanel /> },
     { id: "users", title: "Users", icon: <UserIcon className="size-8 text-white" />, pane: <AdminUsersPanel /> },
     { id: "logs", title: "Logs", icon: <ClipboardIcon className="size-8 text-white" />, pane: <AdminLogsPanel /> },
   ],
+
   HOSPITAL_ADMIN: [
     { id: "home", title: "Home", icon: <HomeIcon className="size-8 text-white" />},
     { id: "users", title: "Users", icon: <UserIcon className="size-8 text-white" />},
+    { id: "rooms_management", title: "Rooms Management", icon: <PlusIcon className="size-8 text-white" />, pane: <HospitalAdminRoomManagement />}
   ],
+
   DOCTOR: [
     { id: "home", title: "Home", icon: <HomeIcon className="size-8 text-white" />},
     { id: "appointments", title: "Appointments", icon: <CalendarIcon className="size-8 text-white" />},
     { id: "patients", title: "Patients", icon: <UserGroupIcon className="size-8 text-white" />},
   ],
+
   RECEPTIONIST: [
     { id: "home", title: "Home", icon: <HomeIcon className="size-8 text-white" />},
     { id: "appointments", title: "Appointments", icon: <CalendarIcon className="size-8 text-white" />},
     {id: "rooms", title: "Rooms", icon: <PlusIcon className="size-8 text-white" />, pane: <ReceptionistRoomsPanel />},
-  ],
+  ]
 };

@@ -101,7 +101,6 @@ public class UserController {
                 return new ResponseEntity<>(new ResponseModel("Username already taken!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(new ResponseModel("Something went wrong!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
         }
     }

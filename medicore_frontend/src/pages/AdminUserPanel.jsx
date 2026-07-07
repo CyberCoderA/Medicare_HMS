@@ -21,19 +21,26 @@ export default function AdminUserPanel() {
   const [userAddInfo, setUserAddInfo] = useState({});
 
   useEffect(() => {
+    const controller = new AbortController();
+    
     const fetchUsersData = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/users/allUsers", {
           withCredentials: true,
+          signal: controller.signal,
         });
+
         setUsersData(response.data);
       }
       catch (error) {
-        console.log(error);
+        if (error.name !== "CanceledError" && error.name !== "AbortError") {
+          console.error("Error fetching rooms:", error);
+        }
       }
     };
 
     fetchUsersData();
+    return () => controller.abort();
   }, []);
 
   const handleChange = (e) => {
@@ -86,9 +93,8 @@ export default function AdminUserPanel() {
         userType: editUserData.userType,
       }
 
-      const response = await axios.post("http://localhost:8080/api/users/updateUser", {}, { params: editedUserData, withCredentials: true });
+      await axios.post("http://localhost:8080/api/users/updateUser", {}, { params: editedUserData, withCredentials: true });
 
-      console.log(response.data);
       setEditUserModal(false);
 
       const tableResponse = await axios.get("http://localhost:8080/api/users/allUsers", {

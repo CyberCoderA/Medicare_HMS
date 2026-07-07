@@ -8,23 +8,40 @@ export default function ProtectedRoute({ page }) {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/users/findUserByUsername", {
-          withCredentials: true,
-        });
+    const controller = new AbortController();
 
-        setUserInfo(response?.data || null);
+    async function checkAuth() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/users/findUserByUsername",
+          {
+            withCredentials: true,
+            signal: controller.signal,
+          }
+        );
+
+        setUserInfo(response.data ?? null);
         setIsAuthenticated(true);
-      } catch {
+      } catch (error) {
+        if (
+          error.name === "CanceledError" ||
+          error.name === "AbortError"
+        ) {
+          return;
+        }
+
         setUserInfo(null);
         setIsAuthenticated(false);
       } finally {
-        setAuthChecked(true);
+        if (!controller.signal.aborted) {
+          setAuthChecked(true);
+        }
       }
     }
 
     checkAuth();
+
+    return () => controller.abort();
   }, []);
 
   if (!authChecked) return <div className="h-screen w-full flex items-center justify-center text-4xl italic">Loading...</div>;

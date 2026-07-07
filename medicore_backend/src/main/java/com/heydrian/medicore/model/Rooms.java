@@ -36,4 +36,5 @@ public class Rooms {
 
     @Column(name="room_isIsolation", nullable=false)
     private boolean roomIsIsolation;
-}   
+}  
+
