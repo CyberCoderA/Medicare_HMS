@@ -5,6 +5,8 @@ export default function TableOfRooms({ roomsData, children }) {
                 return "bg-blue-200"
             case "FULLY_OCCUPIED":
                 return "bg-yellow-200"
+            case "MAINTENANCE":
+                return "bg-red-200"
             default:
                 return "bg-green-200"
         }
@@ -19,7 +21,7 @@ export default function TableOfRooms({ roomsData, children }) {
                     <p>Status: {room.roomStatus}</p>
                     <p>Occupants: {room.roomOccupants}/{room.roomCapacity}</p>
 
-                    {children}
+                    {typeof children === "function" ? children(room) : children}
                 </div>
             ))}
         </div>

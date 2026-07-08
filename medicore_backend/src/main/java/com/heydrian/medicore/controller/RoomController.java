@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -45,4 +47,41 @@ public class RoomController {
             return new ResponseEntity<>(new ResponseModel("Something went wrong!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
         }
     }
+
+    @SuppressWarnings("null")
+    @PostMapping("/updateRoom")
+    public ResponseEntity<?> updateRoom(@RequestParam String roomId, @RequestParam String roomStatus, @RequestParam String roomType, @RequestParam String roomIsIsolation, @RequestParam int roomCapacity) {
+        try {
+            Rooms room = repository.findRoomByRoomId(roomId);
+
+            if (room != null && !room.getRoomId().equals(roomId)) {
+                return new ResponseEntity<>(new ResponseModel("Room Already Exists!", LocalDateTime.now(), null), HttpStatus.CONFLICT);     
+            } else {
+                room.setRoomId(roomId);
+                room.setRoomStatus(roomStatus);
+                room.setRoomType(roomType);
+                room.setRoomIsIsolation(roomIsIsolation.equals("TRUE"));
+                room.setRoomOccupants(room.getRoomOccupants());
+                room.setRoomCapacity(roomCapacity);
+
+                repository.save(room);
+
+                return new ResponseEntity<>(new ResponseModel("Update Successfull!", LocalDateTime.now(), null), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+           return new ResponseEntity<>(new ResponseModel("Update failed!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
+        }
+    }
+    
+
+    @PostMapping("/deleteRoom")
+    public ResponseEntity<?> deleteRoom(@RequestParam String room_id) {
+        try {
+            repository.deleteById(room_id);
+            return new ResponseEntity<>(new ResponseModel("Delete Successfull!", LocalDateTime.now(), null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseModel("Delete failed!", LocalDateTime.now(), null), HttpStatus.CONFLICT);
+        }
+    }
+    
 }
